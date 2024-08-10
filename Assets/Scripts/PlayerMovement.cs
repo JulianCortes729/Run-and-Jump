@@ -9,42 +9,52 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float forceJump = 0.5f;
     [SerializeField] private float speed = 10.0f;
-
     private Rigidbody playerRb;
-    private bool suelo;
+    private bool isGrounded;
     public Joystick joystick;
-
     private Animator animator;
-
     void Start()
     {
-        suelo = true;       
+        isGrounded = true;       
         playerRb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        if(joystick.Horizontal<0 || joystick.Horizontal>0){
             Run();
-            animator.SetBool("isRun",true);
-        }else{
-            animator.SetBool("isRun",false);
-        }
     }
 
     public void Jump(){
-        if(suelo){
+        if(isGrounded){
             playerRb.AddForce(forceJump*Vector3.up,ForceMode.Impulse);
-            suelo = false;
-        }
+            isGrounded = false;
+            animator.SetBool("isJump",true);
+            animator.SetBool("isGrounded", false);
+        } 
     }
 
     public void Run(){
-        float movH = joystick.Horizontal*speed;
-        playerRb.AddForce(movH,0,0);
+        float movH = joystick.Horizontal;
+        playerRb.AddForce(movH*speed,0,0, ForceMode.Acceleration);
+
+        if (Mathf.Abs(movH) > 0.1f)
+        {
+            animator.SetBool("isRun", true);
+        }
+        else
+        {
+            animator.SetBool("isRun", false);
+        }
     }
 
-    void OnCollisionEnter() => suelo = true;
+    void OnCollisionEnter(Collision collision){
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+            animator.SetBool("isJump", false);
+            animator.SetBool("isGrounded", true);
+        }
+    } 
 
 }
