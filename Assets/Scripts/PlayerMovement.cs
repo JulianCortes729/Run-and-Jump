@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    void Update()
+    void FixedUpdate()
     {
             Run();
     }
@@ -49,7 +49,6 @@ public class PlayerMovement : MonoBehaviour
         
         // Asignar directamente la velocidad al Rigidbody
         playerRb.velocity = movement;
-
     }
 
     void OnCollisionEnter(Collision collision){
