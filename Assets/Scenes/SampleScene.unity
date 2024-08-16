@@ -167,7 +167,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 324765968}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 4801e3ab6aa870b4091822752dff3932, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -738,7 +738,7 @@ MonoBehaviour:
   smoothSpeed: 0.125
   offset: {x: 1, y: 0, z: -14}
   minY: 0
-  maxY: 2
+  maxY: 1.5
 --- !u!1 &1021331382
 GameObject:
   m_ObjectHideFlags: 0
@@ -1817,6 +1817,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1561502683311610818, guid: 73938ec2c46454e4581b98069d90306b,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1561502683311610818, guid: 73938ec2c46454e4581b98069d90306b,
         type: 3}

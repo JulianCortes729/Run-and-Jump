@@ -11,7 +11,7 @@ public class CameraFollow : MonoBehaviour
     public float minY;  // Altura mínima de la cámara (para no acercarse demasiado)
     public float maxY;  // Altura máxima de la cámara (para no alejarse demasiado)
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         Vector3 desiredPosition = target.position + offset;
 

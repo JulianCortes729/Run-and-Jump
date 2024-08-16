@@ -44,6 +44,12 @@ public class PlayerMovement : MonoBehaviour
     public void Run(){
         float movH = joystick.Horizontal;
 
+        
+        animator.SetBool("isRunRight",movH > 0.2f && isGrounded);
+       
+        animator.SetBool("isRunLeft",movH < -0.2f && isGrounded);
+        
+
         // Asegurarse de que el movimiento sea en la dirección deseada y con la velocidad constante
         Vector3 movement = new Vector3(movH * speed, playerRb.velocity.y, 0);
         
