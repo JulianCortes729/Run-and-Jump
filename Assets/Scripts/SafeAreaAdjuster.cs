@@ -4,57 +4,45 @@ using UnityEngine;
 
 public class SafeAreaAdjuster : MonoBehaviour
 {
-   private RectTransform panelSafeArea;
-    private Rect lastSafeArea = new Rect(0, 0, 0, 0);
-    private Vector2Int lastScreenSize = new Vector2Int(0, 0);
-    private ScreenOrientation lastOrientation = ScreenOrientation.AutoRotation;
+    public Camera mainCamera; // Arrastra la cámara principal aquí
+    private Vector3 originalCameraPosition; // Guardar la posición original de la cámara
+    private Rect lastSafeArea;
 
-    void Awake()
+    void Start()
     {
-        panelSafeArea = GetComponent<RectTransform>();
-
-        if (panelSafeArea == null)
+        // Almacenar la posición inicial de la cámara
+        if (mainCamera != null)
         {
-            Debug.LogError("SafeAreaAdjuster script must be attached to a UI element with a RectTransform.");
-            return;
+            originalCameraPosition = mainCamera.transform.position;
         }
 
-        ApplySafeArea();
+        ApplySafeAreaAdjustment();
     }
 
-    void Update()
-    {
-        // Only apply if something changed
-        if (lastSafeArea != Screen.safeArea
-            || lastScreenSize.x != Screen.width
-            || lastScreenSize.y != Screen.height
-            || lastOrientation != Screen.orientation)
+    void Update(){
+        if (Screen.safeArea != lastSafeArea)
         {
-            ApplySafeArea();
+            lastSafeArea = Screen.safeArea;
+            ApplySafeAreaAdjustment();
         }
     }
 
-    void ApplySafeArea()
+    void ApplySafeAreaAdjustment()
     {
         Rect safeArea = Screen.safeArea;
 
-        // Convert safe area rectangle from absolute pixels to relative anchors
-        Vector2 anchorMin = safeArea.position;
-        Vector2 anchorMax = safeArea.position + safeArea.size;
-        anchorMin.x /= Screen.width;
-        anchorMin.y /= Screen.height;
-        anchorMax.x /= Screen.width;
-        anchorMax.y /= Screen.height;
+        if (mainCamera != null)
+        {
+            // Calcular cuánto espacio está ocupado por la UI (fuera del área segura)
+            float offsetY = safeArea.y / Screen.height;
 
-        panelSafeArea.anchorMin = anchorMin;
-        panelSafeArea.anchorMax = anchorMax;
-
-        // Store variables to detect changes
-        lastSafeArea = Screen.safeArea;
-        lastScreenSize.x = Screen.width;
-        lastScreenSize.y = Screen.height;
-        lastOrientation = Screen.orientation;
-
-        Debug.Log("Safe Area applied: " + safeArea);
+            // Ajustar la posición vertical de la cámara, partiendo de su posición original
+            mainCamera.transform.position = new Vector3(
+                originalCameraPosition.x,
+                originalCameraPosition.y + offsetY,
+                originalCameraPosition.z
+            );
+        }
     }
 }
+
